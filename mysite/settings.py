@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import mongoengine
+from mongoengine import connect
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,8 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'polls.apps.PollsConfig',
-    'dashboard.apps.DashboardConfig',
+    'cisum.mongoengine_django.mongo_auth',
+    'cisum.apps.CisumConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,11 +79,33 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'cisum',
+         'USER': 'root',
+         'PASSWORD': 'jijihana4649',
+         'HOST': '127.0.0.1',
+         'PORT': '3306',
+         'OPTIONS': {
+          'init_command': 'SET default_storage_engine=INNODB'
+         }
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.dummy'
+     }
+}
+
+## connect databse
+MONGODB_HOST = 'localhost'
+MONGODB_NAME = 'cisum'
+mongoengine.register_connection(
+    mongoengine.DEFAULT_CONNECTION_NAME,
+    name=MONGODB_NAME,
+    host=MONGODB_HOST,tz_aware=True)
+
+connect('cisum')
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -107,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
